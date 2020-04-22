@@ -19,23 +19,32 @@
     "test": "test"
   },
   "scripts": {
-    "build": "npm run lint && npm run test && npm run clean && run-s build:*",
+    "build": "run-s test clean build:*",
     "build:ts": "NODE_ENV=production tsc",
     "clean": "rimraf ./lib",
     "watch": "tsc -w",
-    "test": "mocha --compilers ts:espower-typescript/guess test/**/*.ts",
+    "test": "jest",
     "test:watch": "mocha --watch --compilers ts:espower-typescript/guess test/**/*.ts",
-    "lint": "tslint -c tslint.json ./src/**/*.ts",
+    "format": "pretty-quick",
     "prepublish": "npm run build"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "devDependencies": {
-    "@types/mocha": "^2.2.41",
-    "espower-typescript": "^8.0.0",
-    "mocha": "^3.4.1",
-    "npm-run-all": "^4.0.2",
-    "power-assert": "^1.4.2",
-    "rimraf": "^2.6.1",
-    "tslint": "^5.3.2",
-    "typescript": "^2.3.3"
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.2",
+    "@types/power-assert": "^1.5.3",
+    "husky": "^4.2.5",
+    "jest": "^25.4.0",
+    "npm-run-all": "^4.1.5",
+    "power-assert": "^1.6.1",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
   }
 }

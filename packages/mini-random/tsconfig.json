@@ -1,19 +1,17 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "outDir": "./lib/",
-        "noImplicitAny": false,
-        "sourceMap": false,
-        "pretty": true,
-        "alwaysStrict": true,
-        "declaration": true
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "lib"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "rootDir": ".",
+    "outDir": "./lib/",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "lib"]
 }
