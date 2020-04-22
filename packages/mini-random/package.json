@@ -20,11 +20,10 @@
   },
   "scripts": {
     "build": "run-s test clean build:*",
-    "build:ts": "NODE_ENV=production tsc",
+    "build:ts": "cross-env NODE_ENV=production tsc",
     "clean": "rimraf ./lib",
     "watch": "tsc -w",
     "test": "jest",
-    "test:watch": "mocha --watch --compilers ts:espower-typescript/guess test/**/*.ts",
     "format": "pretty-quick",
     "prepublish": "npm run build"
   },
@@ -37,6 +36,7 @@
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.2",
     "@types/power-assert": "^1.5.3",
+    "cross-env": "^7.0.2",
     "husky": "^4.2.5",
     "jest": "^25.4.0",
     "npm-run-all": "^4.1.5",
