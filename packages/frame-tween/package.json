@@ -1,8 +1,6 @@
 {
   "name": "@rutan/frame-tween",
   "version": "0.1.1",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "author": "ru_shalm",
   "email": "ru_shalm@hazimu.com",
   "license": "WTFPL",
@@ -14,18 +12,27 @@
   "publishConfig": {
     "access": "public"
   },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "module": "esm/index.js",
   "files": [
     "src/",
-    "lib/"
+    "lib/",
+    "esm/"
   ],
   "directories": {
     "test": "test"
   },
   "scripts": {
     "build": "run-s test clean build:*",
-    "build:ts": "cross-env NODE_ENV=production tsc",
-    "clean": "rimraf ./lib",
-    "watch": "tsc -w",
+    "build:cjs": "cross-env NODE_ENV=production tsc -p ./tsconfig.json",
+    "build:esm": "cross-env NODE_ENV=production tsc -p ./tsconfig.esm.json",
+    "clean": "run-p clean:*",
+    "clean:lib": "rimraf ./lib",
+    "clean:esm": "rimraf ./esm",
+    "watch": "run-p watch:*",
+    "watch:cjs": "tsc -w -p ./tsconfig.json",
+    "watch:esm": "tsc -w -p ./tsconfig.esm.json",
     "test": "jest",
     "format": "pretty-quick",
     "prepublish": "npm run build"
