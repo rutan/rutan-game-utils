@@ -1,5 +1,5 @@
 import { Tween } from './Tween';
-import { Easing, EasingFunc } from './Easing';
+import { linear, EasingFunc } from './Easing';
 
 interface AnimationState {
   startParams: any;
@@ -19,7 +19,7 @@ export class Group {
       startParams: {},
       finishParams: {},
       duration: 0,
-      easingFunc: Easing.linear,
+      easingFunc: linear,
       timer: 0,
     };
     if (!this._beginAnimation(tween, state)) return;

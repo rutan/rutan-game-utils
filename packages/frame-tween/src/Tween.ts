@@ -1,5 +1,5 @@
 import { Group } from './Group';
-import { Easing, EasingFunc } from './Easing';
+import { linear, EasingFunc } from './Easing';
 import { TweenStack } from './Stack';
 
 export class Tween {
@@ -53,7 +53,7 @@ export class Tween {
       type: 'move',
       params,
       duration,
-      easingFunc: easingFunc || Easing.linear,
+      easingFunc: easingFunc || linear,
     });
     return this;
   }
@@ -63,7 +63,7 @@ export class Tween {
       type: 'move',
       params: {},
       duration,
-      easingFunc: Easing.linear,
+      easingFunc: linear,
     });
     return this;
   }
