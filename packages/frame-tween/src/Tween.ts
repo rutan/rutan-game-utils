@@ -16,12 +16,14 @@ export class Tween {
   private readonly _target: any;
   private readonly _stacks: TweenStack[];
   private _group: Group | null;
+  private _onUpdateListeners: (() => void)[];
   private _finished: boolean;
 
   constructor(target: any, initialParams?: any) {
     this._target = target;
     this._stacks = [];
     this._group = null;
+    this._onUpdateListeners = [];
     this._finished = false;
 
     if (initialParams) {
@@ -46,6 +48,20 @@ export class Tween {
   group(group: Group) {
     this._group = group;
     return this;
+  }
+
+  addUpdateListener(func: () => void) {
+    this._onUpdateListeners.push(func);
+    return this;
+  }
+
+  removeUpdateListener(func: () => void) {
+    this._onUpdateListeners = this._onUpdateListeners.filter((f) => f !== func);
+    return this;
+  }
+
+  callUpdateListeners() {
+    this._onUpdateListeners.forEach((f) => f());
   }
 
   to(params: any, duration: number, easingFunc?: EasingFunc) {

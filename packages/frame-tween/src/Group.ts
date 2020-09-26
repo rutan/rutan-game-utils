@@ -51,7 +51,9 @@ export class Group {
           });
         }
 
-        return state.timer < state.duration || this._beginAnimation(tween, state);
+        const result = state.timer < state.duration || this._beginAnimation(tween, state);
+        tween.callUpdateListeners();
+        return result;
       })
       .concat(this._items);
   }

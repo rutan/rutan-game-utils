@@ -75,4 +75,20 @@ describe('Tween', () => {
     Tween.update();
     expect(obj.x).toBe(10);
   });
+
+  test('addUpdateListener', () => {
+    let count = 0;
+    const obj = { x: 0 };
+    Tween.create(obj)
+      .addUpdateListener(() => ++count)
+      .to({ x: 100 }, 2)
+      .start();
+
+    Tween.update();
+    expect(count).toBe(1);
+    Tween.update();
+    expect(count).toBe(2);
+    Tween.update();
+    expect(count).toBe(2);
+  });
 });
