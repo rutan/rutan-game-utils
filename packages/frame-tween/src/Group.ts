@@ -14,6 +14,10 @@ type TweenItem = [Tween, AnimationState];
 export class Group {
   private _items: TweenItem[] = [];
 
+  get length() {
+    return this._items.length;
+  }
+
   add(tween: Tween) {
     const state = {
       startParams: {},

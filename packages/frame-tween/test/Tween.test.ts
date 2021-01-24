@@ -101,4 +101,19 @@ describe('Tween', () => {
     Tween.update();
     expect(count).toBe(2);
   });
+
+  test('group length', () => {
+    const obj = { x: 0 };
+    const group = new Group();
+    expect(group.length).toBe(0);
+
+    Tween.create(obj).to({ x: 100 }, 2).group(group).start();
+    expect(group.length).toBe(1);
+
+    group.update();
+    expect(group.length).toBe(1);
+
+    group.update();
+    expect(group.length).toBe(0);
+  });
 });
