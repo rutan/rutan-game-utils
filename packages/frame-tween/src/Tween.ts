@@ -101,9 +101,6 @@ export class Tween {
   }
 
   abort() {
-    if (this._group) {
-      this._group.remove(this);
-    }
     this._stacks.length = 0;
     this._finished = true;
     return this;

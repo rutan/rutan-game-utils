@@ -53,6 +53,8 @@ export class Group {
 
         const result = state.timer < state.duration || this._beginAnimation(tween, state);
         tween.callUpdateListeners();
+        if (!result) tween.abort();
+
         return result;
       })
       .concat(this._items);

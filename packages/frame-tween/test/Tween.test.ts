@@ -63,6 +63,16 @@ describe('Tween', () => {
     expect(obj.x).toBe(10);
   });
 
+  test('finished', () => {
+    const obj = { x: 0 };
+    const tween = Tween.create(obj).to({ x: 100 }, 2).start();
+    expect(tween.finished).toBe(false);
+    Tween.update();
+    expect(tween.finished).toBe(false);
+    Tween.update();
+    expect(tween.finished).toBe(true);
+  });
+
   test('abort', () => {
     const obj = { x: 0 };
     const tween = Tween.create(obj).to({ x: 100 }, 10).start();
