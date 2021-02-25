@@ -157,4 +157,19 @@ describe('Tween', () => {
     group.update();
     expect(group.length).toBe(0);
   });
+
+  test('group stop', () => {
+    const obj = { x: 0 };
+    const group = new Group();
+
+    Tween.create(obj).to({ x: 100 }, 1).to({ x: 200 }, 1).group(group).start();
+
+    group.update();
+    expect(obj.x).toBe(100);
+    expect(group.length).toBe(1);
+    group.clear();
+    group.update();
+    expect(obj.x).toBe(100);
+    expect(group.length).toBe(0);
+  });
 });

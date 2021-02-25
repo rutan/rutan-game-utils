@@ -20,6 +20,11 @@ export class Group {
     return this._items.length;
   }
 
+  clear() {
+    this._items.forEach(([tween, _]) => tween.abort());
+    this._items.length = 0;
+  }
+
   add(tween: TweenableObject) {
     const state: AnimationState = {
       startParams: {},
