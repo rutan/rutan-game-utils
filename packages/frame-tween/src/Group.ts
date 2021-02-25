@@ -10,7 +10,8 @@ interface AnimationState {
   isWaitingCallback: boolean;
 }
 
-type TweenItem = [Tween, AnimationState];
+type TweenableObject = Tween<any>;
+type TweenItem = [TweenableObject, AnimationState];
 
 export class Group {
   private _items: TweenItem[] = [];
@@ -19,7 +20,7 @@ export class Group {
     return this._items.length;
   }
 
-  add(tween: Tween) {
+  add(tween: TweenableObject) {
     const state: AnimationState = {
       startParams: {},
       finishParams: {},
@@ -33,7 +34,7 @@ export class Group {
     this._items.push([tween, state]);
   }
 
-  remove(tween: Tween) {
+  remove(tween: TweenableObject) {
     this._items = this._items.filter(([t, _]) => t !== tween);
   }
 
@@ -67,7 +68,7 @@ export class Group {
       .concat(this._items);
   }
 
-  private _beginAnimation(tween: Tween, state: AnimationState) {
+  private _beginAnimation(tween: TweenableObject, state: AnimationState) {
     while (true) {
       const stack = tween.stacks.shift();
 

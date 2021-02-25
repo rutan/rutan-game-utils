@@ -2,10 +2,10 @@ import { Group } from './Group';
 import { linear, EasingFunc } from './Easing';
 import { TweenStack } from './Stack';
 
-export class Tween {
+export class Tween<T> {
   static _globalGroup = new Group();
 
-  static create(target: any, initialParams?: any) {
+  static create<U>(target: U, initialParams?: Partial<U>) {
     return new Tween(target, initialParams);
   }
 
@@ -13,13 +13,13 @@ export class Tween {
     Tween._globalGroup.update();
   }
 
-  private readonly _target: any;
+  private readonly _target: T;
   private readonly _stacks: TweenStack[];
   private _group: Group | null;
   private _onUpdateListeners: (() => void)[];
   private _finished: boolean;
 
-  constructor(target: any, initialParams?: any) {
+  constructor(target: T, initialParams?: Partial<T>) {
     this._target = target;
     this._stacks = [];
     this._group = null;
@@ -27,8 +27,8 @@ export class Tween {
     this._finished = false;
 
     if (initialParams) {
-      Object.keys(initialParams).forEach((key) => {
-        target[key] = initialParams[key];
+      (Object.keys(initialParams) as (keyof T)[]).forEach((key) => {
+        target[key] = initialParams[key]!;
       });
     }
   }
@@ -64,7 +64,7 @@ export class Tween {
     this._onUpdateListeners.forEach((f) => f());
   }
 
-  to(params: any, duration: number, easingFunc?: EasingFunc) {
+  to(params: Partial<T>, duration: number, easingFunc?: EasingFunc) {
     this._stacks.push({
       type: 'move',
       params,
