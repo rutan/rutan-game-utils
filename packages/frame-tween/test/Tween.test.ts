@@ -63,6 +63,47 @@ describe('Tween', () => {
     expect(obj.x).toBe(10);
   });
 
+  test('async callback', () => {
+    let flagA = false;
+    let doneFunc: (() => void) | undefined;
+
+    const obj = { x: 0 };
+    Tween.create(obj)
+      .wait(1)
+      .call((done: () => void) => {
+        doneFunc = done;
+      })
+      .call(() => (flagA = true))
+      .start();
+
+    expect(flagA).toBe(false);
+    Tween.update();
+    expect(flagA).toBe(false); // check first stop
+    Tween.update();
+    expect(flagA).toBe(false); // check second stop
+
+    if (doneFunc) doneFunc();
+    expect(flagA).toBe(false); // no update
+
+    Tween.update();
+    expect(flagA).toBe(true);
+  });
+
+  test('async callback (quickly)', () => {
+    let flagA = false;
+
+    const obj = { x: 0 };
+    Tween.create(obj)
+      .wait(1)
+      .call((done: () => void) => done())
+      .call(() => (flagA = true))
+      .start();
+
+    expect(flagA).toBe(false);
+    Tween.update();
+    expect(flagA).toBe(true);
+  });
+
   test('finished', () => {
     const obj = { x: 0 };
     const tween = Tween.create(obj).to({ x: 100 }, 2).start();

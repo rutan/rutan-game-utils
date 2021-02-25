@@ -7,6 +7,7 @@ interface AnimationState {
   duration: number;
   easingFunc: EasingFunc;
   timer: number;
+  isWaitingCallback: boolean;
 }
 
 type TweenItem = [Tween, AnimationState];
@@ -19,12 +20,13 @@ export class Group {
   }
 
   add(tween: Tween) {
-    const state = {
+    const state: AnimationState = {
       startParams: {},
       finishParams: {},
       duration: 0,
       easingFunc: linear,
       timer: 0,
+      isWaitingCallback: false,
     };
     if (!this._beginAnimation(tween, state)) return;
 
@@ -41,6 +43,7 @@ export class Group {
     this._items = items
       .filter(([tween, state]) => {
         if (tween.finished) return false;
+        if (state.isWaitingCallback) return true;
 
         ++state.timer;
 
@@ -72,8 +75,18 @@ export class Group {
 
       switch (stack.type) {
         case 'call':
-          stack.func();
-          break; // loop!
+          if (stack.func.length === 0) {
+            stack.func();
+          } else {
+            state.isWaitingCallback = true;
+            stack.func(() => (state.isWaitingCallback = false));
+          }
+
+          if (state.isWaitingCallback) {
+            return true;
+          } else {
+            break; // loop!
+          }
         case 'move': {
           const startParams: any = {};
           Object.keys(stack.params).forEach((key) => {

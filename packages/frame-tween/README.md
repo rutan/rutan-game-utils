@@ -64,6 +64,16 @@ groupB
     30,
     Easing.linear
   )
+  .call((done) => {
+    setTimeout(done, 1000); // wait 1sec
+  })
+  .to(
+    {
+      x: 100,
+    },
+    20,
+    Easing.linear
+  )
   .start();
 
 function mainLoop() {
