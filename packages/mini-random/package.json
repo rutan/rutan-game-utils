@@ -1,8 +1,6 @@
 {
   "name": "@rutan/mini-random",
   "version": "0.1.3",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "author": "ru_shalm",
   "email": "ru_shalm@hazimu.com",
   "license": "WTFPL",
@@ -11,6 +9,12 @@
     "type": "git",
     "url": "git+https://github.com/rutan/mini-random"
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/cjs/index.js",
+  "types": "lib/cjs/index.d.ts",
+  "module": "lib/esm/index.js",
   "files": [
     "src/",
     "lib/"
@@ -19,8 +23,9 @@
     "test": "test"
   },
   "scripts": {
-    "build": "run-s test clean build:*",
-    "build:ts": "cross-env NODE_ENV=production tsc",
+    "build": "run-s test clean && run-p build:*",
+    "build:cjs": "cross-env NODE_ENV=production tsc -p ./tsconfig.json",
+    "build:esm": "cross-env NODE_ENV=production tsc -p ./tsconfig.esm.json",
     "clean": "rimraf ./lib",
     "watch": "tsc -w",
     "test": "jest",
