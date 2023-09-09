@@ -8,12 +8,11 @@ npm install @rutan/frame-tween
 
 ## Usage
 
-### Simple
+```typescript
+import { createTween, Group, easeInOutSine } from '@rutan/frame-tween';
 
-```javascript
-import { Tween, Easing } from '@rutan/frame-tween';
-
-Tween.create(sprite, {
+const tweenGroup = new Group();
+const tween = createTween(sprite, group, {
   x: 0,
 })
   .to(
@@ -21,7 +20,7 @@ Tween.create(sprite, {
       x: 100,
     },
     30,
-    Easing.linear,
+    easeInOutSine,
   )
   .call(() => {
     console.log('finished!');
@@ -30,56 +29,7 @@ Tween.create(sprite, {
 
 function mainLoop() {
   requestAnimationFrame(mainLoop);
-  Tween.update();
-}
-mainLoop();
-```
-
-### use Group
-
-```javascript
-import { Tween, Group, Easing } from '@rutan/frame-tween';
-
-const groupA = new Group();
-Tween.create(spriteA, {
-  x: 0,
-})
-  .group(groupA)
-  .to(
-    {
-      x: 100,
-    },
-    30,
-    Easing.linear,
-  )
-  .start();
-
-const groupB = new Group();
-groupB
-  .create(spriteB, { y: 0 })
-  .to(
-    {
-      y: 100,
-    },
-    30,
-    Easing.linear,
-  )
-  .call((done) => {
-    setTimeout(done, 1000); // wait 1sec
-  })
-  .to(
-    {
-      x: 100,
-    },
-    20,
-    Easing.linear,
-  )
-  .start();
-
-function mainLoop() {
-  requestAnimationFrame(mainLoop);
-  groupA.update();
-  groupB.update();
+  tweenGroup.update();
 }
 mainLoop();
 ```
