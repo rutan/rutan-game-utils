@@ -3,16 +3,6 @@ import { linear, EasingFunc } from './Easing';
 import { TweenStack } from './Stack';
 
 export class Tween<T> {
-  static _globalGroup = new Group();
-
-  static create<U>(target: U, initialParams?: Partial<U>) {
-    return new Tween(target, initialParams);
-  }
-
-  static update() {
-    Tween._globalGroup.update();
-  }
-
   private readonly _target: T;
   private readonly _stacks: TweenStack[];
   private _group: Group | null;
@@ -93,9 +83,8 @@ export class Tween<T> {
   }
 
   start() {
-    if (!this._group) {
-      this._group = Tween._globalGroup;
-    }
+    if (!this._group) throw new Error('not grouped');
+
     this._group.add(this);
     return this;
   }
