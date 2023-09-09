@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "esnext",
-    "outDir": "./esm"
+    "module": "commonjs",
+    "moduleResolution": "node"
   }
 }
