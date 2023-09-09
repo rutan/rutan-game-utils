@@ -1,8 +1,12 @@
 {
   "name": "@rutan/frame-tween",
   "version": "0.5.0",
-  "author": "ru_shalm",
-  "email": "ru_shalm@hazimu.com",
+  "description": "A simple tween animation for fixed frame rate games",
+  "keywords": [
+    "tween",
+    "animation"
+  ],
+  "author": "rutan",
   "license": "WTFPL",
   "homepage": "https://github.com/rutan/frame-tween",
   "repository": {
