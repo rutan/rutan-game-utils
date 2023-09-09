@@ -12,7 +12,7 @@ npm install @rutan/frame-tween
 import { createTween, Group, easeInOutSine } from '@rutan/frame-tween';
 
 const tweenGroup = new Group();
-const tween = createTween(sprite, group, {
+const tween = createTween(sprite, tweenGroup, {
   x: 0,
 })
   .to(
