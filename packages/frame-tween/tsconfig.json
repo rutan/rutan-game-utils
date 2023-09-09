@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "outDir": "./cjs",
+    "target": "es2019",
+    "module": "esnext",
+    "outDir": "./lib",
     "sourceMap": true,
     "declaration": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "strict": true,
