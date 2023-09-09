@@ -1,2 +1,6 @@
 /node_modules
-/lib
+/cjs
+/mjs
+/tmp
+*.tgz
+*.log

@@ -1,13 +1,6 @@
-import MiniRandom from '../src/index';
+import { MiniRandom } from '../src';
 
 describe('MiniRandom', () => {
-  describe('create', () => {
-    test('callable create', () => {
-      const miniRandom = MiniRandom.create();
-      expect(miniRandom).toBeTruthy();
-    });
-  });
-
   describe('rand', () => {
     test('valid value', () => {
       const miniRandom = new MiniRandom();
@@ -28,11 +21,10 @@ describe('MiniRandom', () => {
 
   describe('seed', () => {
     test('use seed', () => {
-      const miniRandom1 = MiniRandom.create();
-      const miniRandom2 = new MiniRandom();
+      const miniRandom1 = new MiniRandom(1234, 5678, 9012, 3456);
+      const miniRandom2 = new MiniRandom(9876, 5432, 1098, 7654);
       expect(miniRandom1.rand()).not.toBe(miniRandom2.rand());
-      const seeds = miniRandom1.dumpSeed();
-      miniRandom2.loadSeed(seeds[0], seeds[1], seeds[2], seeds[3]);
+      miniRandom2.loadSeed(...miniRandom1.dumpSeed());
       expect(miniRandom1.rand()).toBe(miniRandom2.rand());
     });
   });
