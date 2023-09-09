@@ -1,6 +1,6 @@
 {
   "name": "@rutan/mini-random",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A tiny random number generator",
   "keywords": [
     "random"
@@ -61,7 +61,6 @@
     "build": "run-s lint test clean build:* validate",
     "build:packemon": "packemon build --addEngines --addExports --addFiles --declaration",
     "validate": "packemon validate",
-    "pack": "packemon pack --declaration",
     "clean": "run-p clean:*",
     "clean:packemon": "packemon clean",
     "clean:cjs": "rimraf ./cjs",
@@ -72,8 +71,7 @@
     "test": "jest",
     "format": "prettier -w .",
     "prepare": "husky install",
-    "precommit": "npm run lint",
-    "prepublish": "npm run build"
+    "precommit": "npm run lint"
   },
   "devDependencies": {
     "@types/jest": "^29.5.4",
