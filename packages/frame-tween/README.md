@@ -21,7 +21,7 @@ Tween.create(sprite, {
       x: 100,
     },
     30,
-    Easing.linear
+    Easing.linear,
   )
   .call(() => {
     console.log('finished!');
@@ -50,7 +50,7 @@ Tween.create(spriteA, {
       x: 100,
     },
     30,
-    Easing.linear
+    Easing.linear,
   )
   .start();
 
@@ -62,7 +62,7 @@ groupB
       y: 100,
     },
     30,
-    Easing.linear
+    Easing.linear,
   )
   .call((done) => {
     setTimeout(done, 1000); // wait 1sec
@@ -72,7 +72,7 @@ groupB
       x: 100,
     },
     20,
-    Easing.linear
+    Easing.linear,
   )
   .start();
 
