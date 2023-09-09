@@ -1,4 +1,4 @@
-import MiniRandom from '../src/index';
+import { MiniRandom } from '../src/MiniRandom';
 
 describe('MiniRandom', () => {
   describe('create', () => {
