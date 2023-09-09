@@ -1,8 +1,4 @@
 export class MiniRandom {
-  public static create() {
-    return new MiniRandom(Math.floor(Math.random() * 123456789));
-  }
-
   private _x!: number;
   private _y!: number;
   private _z!: number;
@@ -19,7 +15,7 @@ export class MiniRandom {
     this._w = w;
   }
 
-  public dumpSeed() {
+  public dumpSeed(): [number, number, number, number] {
     return [this._x, this._y, this._z, this._w];
   }
 
