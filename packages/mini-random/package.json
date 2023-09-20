@@ -21,22 +21,15 @@
   },
   "main": "./cjs/index.cjs",
   "types": "./cjs/index.d.ts",
-  "module": "./mjs/index.mjs",
+  "module": "./esm/index.js",
   "exports": {
     "./package.json": "./package.json",
-    "./*": {
-      "node": {
-        "import": {
-          "types": "./mjs/*.d.ts",
-          "default": "./mjs/*.mjs"
-        },
-        "require": {
-          "types": "./cjs/*.d.ts",
-          "default": "./cjs/*.cjs"
-        }
-      }
-    },
     ".": {
+      "browser": {
+        "types": "./esm/index.d.ts",
+        "module": "./esm/index.js",
+        "import": "./esm/index.js"
+      },
       "node": {
         "import": {
           "types": "./mjs/index.d.ts",
@@ -51,6 +44,7 @@
   },
   "files": [
     "cjs/**/*",
+    "esm/**/*",
     "mjs/**/*",
     "src/**/*"
   ],
@@ -65,6 +59,7 @@
     "clean:packemon": "packemon clean",
     "clean:cjs": "rimraf ./cjs",
     "clean:mjs": "rimraf ./mjs",
+    "clean:esm": "rimraf ./esm",
     "lint": "run-s lint:*",
     "lint:prettier": "prettier -c .",
     "lint:ts": "tsc --noEmit",
@@ -91,7 +86,10 @@
     "inputs": {
       "index": "./src/index.ts"
     },
-    "platform": "node",
+    "platform": [
+      "browser",
+      "node"
+    ],
     "support": "stable",
     "format": [
       "cjs",
