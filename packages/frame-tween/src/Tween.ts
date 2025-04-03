@@ -1,6 +1,6 @@
-import { Group } from './Group';
-import { linear, EasingFunc } from './Easing';
-import { TweenStack } from './Stack';
+import { Group } from './Group.js';
+import { linear, EasingFunc } from './Easing.js';
+import { TweenStack } from './Stack.js';
 
 export class Tween<T> {
   private readonly _target: T;

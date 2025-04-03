@@ -1,6 +1,6 @@
 /node_modules
-/cjs
-/mjs
+/lib
 /tmp
 *.tgz
 *.log
+pnpm-lock.yaml
