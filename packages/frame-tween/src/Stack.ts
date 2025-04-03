@@ -1,4 +1,4 @@
-import { EasingFunc } from './Easing';
+import { EasingFunc } from './Easing.js';
 
 export type TweenStack = MoveStack | CallStack;
 
