@@ -1,7 +1,5 @@
 /node_modules
-/cjs
-/mjs
-/esm
+/lib
 /tmp
 *.tgz
 *.log

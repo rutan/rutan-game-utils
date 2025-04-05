@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "module": "esnext",
-    "outDir": "./lib",
+    "target": "ESNext",
+    "module": "Node16",
     "declaration": true,
-    "sourceMap": true,
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
+    "declarationDir": "./lib",
+    "outDir": "./lib",
+    "moduleResolution": "node16",
     "strict": true,
-    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "lib"]
+  "include": ["src"]
 }

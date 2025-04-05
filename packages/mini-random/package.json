@@ -1,5 +1,6 @@
 {
   "name": "@rutan/mini-random",
+  "type": "module",
   "version": "0.2.2",
   "description": "A tiny random number generator",
   "keywords": [
@@ -15,86 +16,42 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
   "engines": {
-    "node": ">=16.12.0"
+    "node": ">=18.12.0"
   },
-  "main": "./cjs/index.cjs",
-  "types": "./cjs/index.d.ts",
-  "module": "./esm/index.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "browser": {
-        "types": "./esm/index.d.ts",
-        "module": "./esm/index.js",
-        "import": "./esm/index.js"
-      },
-      "node": {
-        "import": {
-          "types": "./mjs/index.d.ts",
-          "default": "./mjs/index.mjs"
-        },
-        "require": {
-          "types": "./cjs/index.d.ts",
-          "default": "./cjs/index.cjs"
-        }
-      }
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     }
   },
+  "types": "./lib/index.d.ts",
+  "module": "./lib/index.js",
   "files": [
-    "cjs/**/*",
-    "esm/**/*",
-    "mjs/**/*",
+    "lib/**/*",
     "src/**/*"
   ],
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build": "run-s lint test clean build:* validate",
-    "build:packemon": "packemon build --addEngines --addExports --addFiles --declaration",
-    "validate": "packemon validate",
-    "clean": "run-p clean:*",
-    "clean:packemon": "packemon clean",
-    "clean:cjs": "rimraf ./cjs",
-    "clean:mjs": "rimraf ./mjs",
-    "clean:esm": "rimraf ./esm",
+    "build": "tsc",
     "lint": "run-s lint:*",
     "lint:prettier": "prettier -c .",
     "lint:ts": "tsc --noEmit",
-    "test": "jest",
+    "test": "vitest run",
     "format": "prettier -w .",
-    "prepare": "husky install",
-    "precommit": "npm run lint"
+    "clean": "rimraf lib",
+    "prepublishOnly": "npm run lint && npm test && npm run build"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.14",
     "@types/node": "^22.14.0",
-    "cross-env": "^7.0.3",
-    "husky": "^9.1.7",
-    "jest": "^29.7.0",
-    "npm-run-all": "^4.1.5",
-    "packemon": "^4.1.1",
+    "npm-run-all2": "^7.0.2",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
-    "ts-jest": "^29.3.1",
-    "ts-jest-resolver": "^2.0.1",
-    "typescript": "^5.8.3"
-  },
-  "packemon": {
-    "inputs": {
-      "index": "./src/index.ts"
-    },
-    "platform": [
-      "browser",
-      "node"
-    ],
-    "support": "stable",
-    "format": [
-      "cjs",
-      "mjs"
-    ]
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
   },
   "packageManager": "pnpm@10.7.1"
 }
