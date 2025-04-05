@@ -1,7 +1,7 @@
 {
   "name": "@rutan/mini-random",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A tiny random number generator",
   "keywords": [
     "random"
