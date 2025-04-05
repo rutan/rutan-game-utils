@@ -1,2 +1,2 @@
-export * from './MiniRandom';
-export * from './create';
+export * from './MiniRandom.js';
+export * from './create.js';
