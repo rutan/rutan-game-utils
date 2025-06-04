@@ -119,14 +119,18 @@ describe('Tween', () => {
 
   test('abort', () => {
     const obj = { x: 0 };
-    const tween = new Tween(obj).group(globalGroup).to({ x: 100 }, 10).start();
+    const group = new Group();
+    const tween = new Tween(obj).group(group).to({ x: 100 }, 10).start();
     expect(obj.x).toBe(0);
+    expect(group.length).toBe(1);
 
-    globalGroup.update();
+    group.update();
     expect(obj.x).toBe(10);
 
     tween.abort();
-    globalGroup.update();
+    expect(group.length).toBe(0);
+
+    group.update();
     expect(obj.x).toBe(10);
   });
 
