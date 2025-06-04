@@ -92,6 +92,8 @@ export class Tween<T> {
   abort() {
     this._stacks.length = 0;
     this._finished = true;
+    // ensure the tween is no longer tracked by its group
+    this._group?.remove(this);
     return this;
   }
 }
