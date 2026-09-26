@@ -1,0 +1,58 @@
+{
+  "name": "@rutan/frame-tween",
+  "type": "module",
+  "version": "0.7.0",
+  "description": "A simple tween animation for fixed frame rate games",
+  "keywords": [
+    "tween",
+    "animation"
+  ],
+  "author": "rutan",
+  "license": "WTFPL",
+  "homepage": "https://github.com/rutan/frame-tween",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rutan/frame-tween"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.12.0"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "types": "./lib/index.d.ts",
+  "module": "./lib/index.js",
+  "files": [
+    "lib/**/*",
+    "src/**/*"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "run-s lint:*",
+    "lint:prettier": "prettier -c .",
+    "lint:ts": "tsc --noEmit",
+    "test": "vitest run",
+    "format": "prettier -w .",
+    "clean": "rimraf lib",
+    "prepublishOnly": "npm run lint && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "npm-run-all2": "^7.0.2",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.2",
+    "vitest": "^3.1.1"
+  },
+  "packageManager": "pnpm@10.7.1"
+}
