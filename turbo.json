@@ -3,15 +3,23 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/config/tsconfig.base.json"]
     },
     "test": {
       "dependsOn": ["^build", "build"]
     },
     "lint": {
       "dependsOn": ["^build", "build"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.oxfmtrc.json", "$TURBO_ROOT$/config/oxlintrc.base.json"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/.oxfmtrc.json",
+        "$TURBO_ROOT$/config/tsconfig.base.json",
+        "$TURBO_ROOT$/config/oxlintrc.base.json"
+      ]
     },
-    "format": {}
+    "format": {
+      "cache": false
+    }
   }
 }

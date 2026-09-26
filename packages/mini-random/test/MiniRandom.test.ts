@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { MiniRandom } from '../src';
 
 describe('MiniRandom', () => {

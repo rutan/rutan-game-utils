@@ -6,6 +6,7 @@
     "build": "turbo build",
     "test": "turbo test",
     "lint": "run-s lint:*",
+    "lint:oxfmt": "oxfmt --check",
     "lint:turbo": "turbo lint",
     "format": "run-s format:*",
     "format:oxfmt": "oxfmt",
@@ -14,11 +15,15 @@
     "release:packages": "changeset publish"
   },
   "devDependencies": {
+    "@types/node": "^24.13.6",
     "npm-run-all2": "^9.0.3",
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2002",
-    "turbo": "^2.11.3"
+    "tsdown": "^0.23.0",
+    "turbo": "^2.11.3",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
   },
   "packageManager": "pnpm@12.6.0"
 }

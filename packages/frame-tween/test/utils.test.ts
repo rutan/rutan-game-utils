@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { createTween, Group, Tween } from '../src';
 
 describe('utils', () => {

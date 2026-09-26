@@ -34,8 +34,7 @@
   "scripts": {
     "start": "node ./bin/deployment-zip",
     "dev": "jiti ./src/cli.ts",
-    "build": "run-s build:*",
-    "build:tsdown": "tsdown",
+    "build": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "run-s lint:*",
@@ -59,13 +58,6 @@
     "node-html-parser": "^9.0.1"
   },
   "devDependencies": {
-    "@types/archiver": "^8.0.0",
-    "@types/node": "^26.2.0",
-    "esbuild": "^0.28.2",
-    "npm-run-all2": "^9.0.3",
-    "tsdown": "^0.22.14",
-    "typescript": "^7.0.2",
-    "vite": "^8.2.1",
-    "vitest": "^4.1.11"
+    "@types/archiver": "^8.0.0"
   }
 }

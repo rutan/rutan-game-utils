@@ -1,3 +1,4 @@
+import { describe, expect, test, beforeEach } from 'vitest';
 import { Group, Tween } from '../src';
 
 describe('Tween', () => {
