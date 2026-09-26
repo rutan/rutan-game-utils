@@ -1,22 +1,24 @@
 {
   "name": "rutan-game-utils",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "turbo build",
     "test": "turbo test",
     "lint": "run-s lint:*",
     "lint:turbo": "turbo lint",
     "format": "run-s format:*",
+    "format:oxfmt": "oxfmt",
     "format:turbo": "turbo format",
     "release": "run-s build release:*",
     "release:packages": "changeset publish"
   },
-  "packageManager": "pnpm@12.6.0",
   "devDependencies": {
     "npm-run-all2": "^9.0.3",
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",
+    "oxlint-tsgolint": "^7.0.2002",
     "turbo": "^2.11.3"
-  }
+  },
+  "packageManager": "pnpm@12.6.0"
 }

@@ -1,24 +1,27 @@
 {
   "name": "@rutan/mini-random",
-  "type": "module",
   "version": "0.3.0",
   "description": "A tiny random number generator",
   "keywords": [
     "random"
   ],
-  "author": "rutan",
-  "license": "WTFPL",
   "homepage": "https://github.com/rutan/mini-random",
+  "license": "WTFPL",
+  "author": "rutan",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rutan/mini-random"
   },
-  "publishConfig": {
-    "access": "public"
+  "directories": {
+    "test": "test"
   },
-  "engines": {
-    "node": ">=18.12.0"
-  },
+  "files": [
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -26,31 +29,27 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.js",
-  "files": [
-    "dist/**/*",
-    "src/**/*"
-  ],
-  "directories": {
-    "test": "test"
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsc",
     "lint": "run-s lint:*",
-    "lint:prettier": "prettier -c .",
+    "lint:oxfmt": "oxfmt -c ../../.oxfmtrc.json --check",
     "lint:ts": "tsc --noEmit",
     "test": "vitest run",
-    "format": "prettier -w .",
+    "format": "oxfmt -c ../../.oxfmtrc.json",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run lint && npm test && npm run build"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "npm-run-all2": "^7.0.2",
-    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.3",
     "vitest": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=18.12.0"
   }
 }

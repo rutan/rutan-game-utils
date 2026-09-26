@@ -1,5 +1,5 @@
-import { Tween } from './Tween.js';
 import { linear, EasingFunc } from './Easing.js';
+import { Tween } from './Tween.js';
 
 interface AnimationState {
   startParams: any;

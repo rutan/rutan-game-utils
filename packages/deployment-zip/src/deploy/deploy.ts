@@ -34,7 +34,7 @@ export async function deploy(mode: DeploymentMode, inputDir: string, userConfig:
         await deployS3(inputDir, config);
         break;
       default:
-        throw new Error(`unknown mode: ${mode}`);
+        throw new Error(`unknown mode: ${String(mode)}`);
     }
   } catch (e) {
     await callPluginHook({

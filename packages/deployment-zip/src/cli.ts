@@ -45,10 +45,8 @@ import { isDeploymentMode } from './types';
     },
   });
 
-  try {
-    await runMain(main);
-  } catch (e) {
-    consola.error(e);
-    process.exit(1);
-  }
-})();
+  await runMain(main);
+})().catch((e) => {
+  consola.error(e);
+  process.exit(1);
+});

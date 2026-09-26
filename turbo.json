@@ -9,7 +9,8 @@
       "dependsOn": ["^build", "build"]
     },
     "lint": {
-      "dependsOn": ["^build", "build"]
+      "dependsOn": ["^build", "build"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/.oxfmtrc.json", "$TURBO_ROOT$/config/oxlintrc.base.json"]
     },
     "format": {}
   }

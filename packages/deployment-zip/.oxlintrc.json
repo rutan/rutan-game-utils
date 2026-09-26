@@ -1,14 +1,5 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["lib/**", "tmp/**", "example/sample/**/*"],
-  "rules": {
-    "no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
-      }
-    ]
-  }
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "extends": ["../../config/oxlintrc.base.json"],
+  "ignorePatterns": ["example/sample/**/*"]
 }

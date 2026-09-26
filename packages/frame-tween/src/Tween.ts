@@ -1,5 +1,5 @@
-import { Group } from './Group.js';
 import { linear, EasingFunc } from './Easing.js';
+import { Group } from './Group.js';
 import { TweenStack } from './Stack.js';
 
 export class Tween<T> {
