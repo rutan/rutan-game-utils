@@ -1,0 +1,8 @@
+{
+  "name": "rutan-game-utils",
+  "type": "module",
+  "private": true,
+  "scripts": {
+  },
+  "packageManager": "pnpm@12.6.0"
+}
