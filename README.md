@@ -4,10 +4,23 @@
 
 ## Development
 
-```
+```sh
 # Install dependencies
 pnpm install
 
-# Run build
+# Build all packages
 pnpm build
+
+# Check formatting and types, and run configured linters
+pnpm lint
+
+# Run all tests
+pnpm test
+```
+
+To run a command for one package, use a filter from the repository root:
+
+```sh
+pnpm --filter @rutan/frame-tween build
+pnpm --filter @rutan/frame-tween test
 ```
