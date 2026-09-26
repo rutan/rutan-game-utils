@@ -6,12 +6,16 @@
     "animation",
     "tween"
   ],
-  "homepage": "https://github.com/rutan/frame-tween",
+  "homepage": "https://github.com/rutan/rutan-game-utils/tree/main/packages/frame-tween#readme",
+  "bugs": {
+    "url": "https://github.com/rutan/rutan-game-utils/issues"
+  },
   "license": "WTFPL",
   "author": "rutan",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rutan/frame-tween"
+    "url": "git+https://github.com/rutan/rutan-game-utils.git",
+    "directory": "packages/frame-tween"
   },
   "directories": {
     "test": "test"

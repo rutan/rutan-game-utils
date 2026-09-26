@@ -5,12 +5,16 @@
   "keywords": [
     "random"
   ],
-  "homepage": "https://github.com/rutan/mini-random",
+  "homepage": "https://github.com/rutan/rutan-game-utils/tree/main/packages/mini-random#readme",
+  "bugs": {
+    "url": "https://github.com/rutan/rutan-game-utils/issues"
+  },
   "license": "WTFPL",
   "author": "rutan",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rutan/mini-random"
+    "url": "git+https://github.com/rutan/rutan-game-utils.git",
+    "directory": "packages/mini-random"
   },
   "directories": {
     "test": "test"

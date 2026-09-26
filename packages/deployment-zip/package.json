@@ -2,12 +2,16 @@
   "name": "@rutan/deployment-zip",
   "version": "0.8.0",
   "description": "A CLI tool to create a deployment zip file.",
-  "homepage": "https://github.com/rutan/deployment-zip",
+  "homepage": "https://github.com/rutan/rutan-game-utils/tree/main/packages/deployment-zip#readme",
+  "bugs": {
+    "url": "https://github.com/rutan/rutan-game-utils/issues"
+  },
   "license": "MIT",
   "author": "ru_shalm <ru_shalm@hazimu.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rutan/deployment-zip.git"
+    "url": "git+https://github.com/rutan/rutan-game-utils.git",
+    "directory": "packages/deployment-zip"
   },
   "bin": {
     "deployment-zip": "bin/deployment-zip"

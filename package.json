@@ -1,6 +1,14 @@
 {
   "name": "rutan-game-utils",
   "private": true,
+  "homepage": "https://github.com/rutan/rutan-game-utils#readme",
+  "bugs": {
+    "url": "https://github.com/rutan/rutan-game-utils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rutan/rutan-game-utils.git"
+  },
   "type": "module",
   "scripts": {
     "build": "turbo build",
