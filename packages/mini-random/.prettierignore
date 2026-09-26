@@ -1,0 +1,5 @@
+/node_modules
+/lib
+/tmp
+/pnpm-lock.yaml
+*.md
