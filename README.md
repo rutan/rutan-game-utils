@@ -14,8 +14,11 @@ pnpm build
 # Check formatting and types, and run configured linters
 pnpm lint
 
-# Run all tests
+# Run unit tests
 pnpm test
+
+# Build and test the packed packages as a consumer
+pnpm test:packages
 ```
 
 To run a command for one package, use a filter from the repository root:
