@@ -1,0 +1,113 @@
+import { createReadStream } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import { relative, sep } from 'node:path';
+import { sep as posixSep } from 'node:path/posix';
+import { Readable } from 'node:stream';
+import { consola } from 'consola';
+import { colorize } from 'consola/utils';
+import ignore, { type Ignore } from 'ignore';
+import type { Config } from '../config';
+import { callPluginHook } from '../plugin';
+import type { DeploymentMode } from '../types';
+import { getFilesRecursively } from '../utils';
+
+export async function createIgnore(config: Config) {
+  // @ts-ignore
+  const ig: Ignore = ignore();
+
+  if (config.ignores) ig.add(config.ignores);
+  if (config.ignoreFile) {
+    const ignoreFiles = Array.isArray(config.ignoreFile) ? config.ignoreFile : [config.ignoreFile];
+    for (const file of ignoreFiles) {
+      const ignoreFile = await readFile(file, 'utf-8');
+      ig.add(ignoreFile.split('\n').filter(Boolean));
+    }
+  }
+
+  return ig;
+}
+
+export async function buildReadStream({
+  inputFile,
+  config,
+  mode,
+}: {
+  inputFile: string;
+  config: Config;
+  mode: DeploymentMode;
+}) {
+  const [{ stream }] = await callPluginHook({
+    plugins: config.plugins,
+    hook: 'transform',
+    args: [
+      {
+        name: inputFile,
+        stream: createReadStream(inputFile),
+        mode,
+      },
+    ],
+    argsHook: ([params], result) => {
+      if (result instanceof Readable) return [{ ...params, stream: result }] as const;
+      if (typeof result === 'string') return [{ ...params, stream: Readable.from(result) }] as const;
+      return [params] as const;
+    },
+  });
+
+  return stream;
+}
+
+export async function eachDeployFiles(
+  {
+    mode,
+    inputDir,
+    config,
+    parallel,
+  }: {
+    mode: DeploymentMode;
+    inputDir: string;
+    config: Config;
+    parallel?: boolean | number;
+  },
+  cb: (obj: { file: string; relativePath: string; inputStream: Readable }) => Promise<void>,
+): Promise<void> {
+  const ig = await createIgnore(config);
+  const files = await getFilesRecursively(inputDir);
+  const tasks: Promise<void>[] = [];
+
+  const taskFunc = async (file: string) => {
+    const relativePath = relative(inputDir, file);
+    const normalizedRelativePath = relativePath.split(sep).join(posixSep);
+    if (ig.ignores(normalizedRelativePath)) {
+      consola.log(colorize('gray', `skip ${normalizedRelativePath}`));
+    } else {
+      consola.log(colorize('green', `add ${normalizedRelativePath}`));
+      await cb({
+        file,
+        relativePath: normalizedRelativePath,
+        inputStream: await buildReadStream({
+          inputFile: file,
+          config,
+          mode,
+        }),
+      });
+    }
+  };
+
+  function enqueue(file: string) {
+    const task = taskFunc(file).finally(() => {
+      const nextFile = files.shift();
+      if (nextFile) enqueue(nextFile);
+    });
+    tasks.push(task);
+  }
+
+  const parallelCount = typeof parallel === 'number' ? parallel : parallel ? 10 : 1;
+  for (let i = 0; i < parallelCount; ++i) {
+    const file = files.shift();
+    if (file) enqueue(file);
+  }
+
+  for (let i = 0; i < tasks.length; ++i) {
+    await tasks[i];
+  }
+}

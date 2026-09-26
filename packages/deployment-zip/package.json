@@ -1,0 +1,75 @@
+{
+  "name": "@rutan/deployment-zip",
+  "version": "0.8.0",
+  "description": "A CLI tool to create a deployment zip file.",
+  "homepage": "https://github.com/rutan/deployment-zip",
+  "license": "MIT",
+  "author": "ru_shalm <ru_shalm@hazimu.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rutan/deployment-zip.git"
+  },
+  "bin": {
+    "deployment-zip": "bin/deployment-zip"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./plugins/insertTagToHTMLHeadPlugin": {
+      "types": "./dist/plugins/insertTagToHTMLHeadPlugin.d.mts",
+      "import": "./dist/plugins/insertTagToHTMLHeadPlugin.mjs"
+    }
+  },
+  "scripts": {
+    "start": "node ./bin/deployment-zip",
+    "dev": "jiti ./src/cli.ts",
+    "build": "run-s build:*",
+    "build:tsdown": "tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "run-s lint:*",
+    "lint:oxfmt": "oxfmt --check .",
+    "lint:oxlint": "oxlint .",
+    "lint:tsc": "tsc",
+    "format": "run-s format:*",
+    "format:oxfmt": "oxfmt --write .",
+    "format:oxlint": "oxlint --fix ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1113.0",
+    "@aws-sdk/credential-provider-node": "^3.972.80",
+    "@aws-sdk/lib-storage": "^3.1113.0",
+    "archiver": "^8.0.0",
+    "citty": "^0.2.2",
+    "consola": "^3.4.2",
+    "ignore": "^7.0.6",
+    "jiti": "^2.7.0",
+    "mime": "^4.1.0",
+    "node-html-parser": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^8.0.0",
+    "@types/node": "^26.2.0",
+    "esbuild": "^0.28.2",
+    "npm-run-all2": "^9.0.3",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "tsdown": "^0.22.14",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.11"
+  },
+  "packageManager": "pnpm@11.22.0"
+}

@@ -1,0 +1,60 @@
+import { createWriteStream } from 'node:fs';
+import { mkdir } from 'node:fs/promises';
+import { dirname } from 'node:path';
+import { ZipArchive } from 'archiver';
+import { consola } from 'consola';
+import type { Config } from '../config';
+import { eachDeployFiles } from './common';
+
+export async function deployZip(inputDir: string, config: Config) {
+  const outputFileName = typeof config.zip.output === 'function' ? config.zip.output(inputDir) : config.zip.output;
+
+  consola.start(`Deploying ${inputDir} to ${outputFileName}`);
+
+  await mkdir(dirname(outputFileName), { recursive: true });
+
+  const archive = new ZipArchive({
+    zlib: { level: 9 },
+  });
+  let rejectInputStream: (error: Error) => void;
+  const inputStreamFailed = new Promise<never>((_resolve, reject) => {
+    rejectInputStream = reject;
+  });
+
+  await eachDeployFiles(
+    {
+      mode: 'zip',
+      inputDir,
+      config,
+      parallel: true,
+    },
+    async ({ relativePath, inputStream }) => {
+      inputStream.once('error', rejectInputStream);
+      archive.append(inputStream, { name: relativePath });
+    },
+  );
+
+  const outputStream = createWriteStream(outputFileName);
+  let failed = false;
+
+  try {
+    await Promise.race([
+      new Promise<void>((resolve, reject) => {
+        outputStream.on('close', () => {
+          if (!failed) consola.success(`Created ${outputFileName} (${archive.pointer()} bytes)`);
+          resolve();
+        });
+        outputStream.on('error', (e) => reject(e));
+        archive.on('error', (e) => reject(e));
+        archive.pipe(outputStream);
+        archive.finalize().catch(reject);
+      }),
+      inputStreamFailed,
+    ]);
+  } catch (error) {
+    failed = true;
+    archive.abort();
+    outputStream.destroy();
+    throw error;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "rootDir": "./",
+    "outDir": "./lib",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*", "tests/**/*", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}
