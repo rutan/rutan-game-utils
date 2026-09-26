@@ -3,6 +3,20 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "run-s lint:*",
+    "lint:turbo": "turbo lint",
+    "format": "run-s format:*",
+    "format:turbo": "turbo format",
+    "release": "run-s build release:*",
+    "release:packages": "changeset publish"
   },
-  "packageManager": "pnpm@12.6.0"
+  "packageManager": "pnpm@12.6.0",
+  "devDependencies": {
+    "npm-run-all2": "^9.0.3",
+    "oxfmt": "^0.70.0",
+    "oxlint": "^1.85.0",
+    "turbo": "^2.11.3"
+  }
 }
