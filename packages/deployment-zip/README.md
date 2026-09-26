@@ -1,5 +1,7 @@
 # @rutan/deployment-zip
 
+Requires Node.js 24 or later.
+
 ## How to use
 
 ```bash
