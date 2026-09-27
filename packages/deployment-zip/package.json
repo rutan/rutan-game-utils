@@ -1,6 +1,6 @@
 {
   "name": "@rutan/deployment-zip",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "A CLI tool to create a deployment zip file.",
   "homepage": "https://github.com/rutan/rutan-game-utils/tree/main/packages/deployment-zip#readme",
   "bugs": {
