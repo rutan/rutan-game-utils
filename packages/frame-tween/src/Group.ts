@@ -34,7 +34,7 @@ export class Group {
 
   /** @deprecated Use `Tween.abort()` */
   remove(tween: TweenableObject) {
-    tween.abort();
+    if (this._items.has(tween)) tween.abort();
   }
 
   [addGroup](tween: TweenableObject) {

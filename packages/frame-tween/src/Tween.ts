@@ -101,11 +101,18 @@ export class Tween<T> {
     }
 
     this._status = 'running';
-    this._group[addGroup](this);
+    try {
+      this._group[addGroup](this);
+    } catch (error) {
+      this.abort();
+      throw error;
+    }
     return this;
   }
 
   abort() {
+    if (this.finished) return this;
+
     this._status = 'aborted';
     this._cancelAnimation();
     return this;
