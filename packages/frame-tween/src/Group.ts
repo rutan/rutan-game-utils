@@ -1,4 +1,5 @@
 import { linear, EasingFunc } from './Easing.js';
+import { addGroup, finishTween, removeGroup } from './internal/symbol.js';
 import { Tween } from './Tween.js';
 
 interface AnimationState {
@@ -11,21 +12,35 @@ interface AnimationState {
 }
 
 type TweenableObject = Tween<any>;
-type TweenItem = [TweenableObject, AnimationState];
+
+interface GroupEntry {
+  state: AnimationState;
+  registrationId: number;
+}
 
 export class Group {
-  private _items: TweenItem[] = [];
+  private _items: Map<TweenableObject, GroupEntry> = new Map();
+  private _lastRegistrationId = 0;
+  private _isUpdating = false;
 
   get length() {
-    return this._items.length;
+    return this._items.size;
   }
 
-  clear() {
-    this._items.forEach(([tween, _]) => tween.abort());
-    this._items.length = 0;
-  }
-
+  /** @deprecated Use `Tween.group(group).start()` */
   add(tween: TweenableObject) {
+    tween.group(this).start();
+  }
+
+  /** @deprecated Use `Tween.abort()` */
+  remove(tween: TweenableObject) {
+    if (this._items.has(tween)) tween.abort();
+  }
+
+  [addGroup](tween: TweenableObject) {
+    // If it is already registered, do nothing
+    if (this._items.has(tween)) return;
+
     const state: AnimationState = {
       startParams: {},
       finishParams: {},
@@ -34,43 +49,89 @@ export class Group {
       timer: 0,
       isWaitingCallback: false,
     };
-    if (!this._beginAnimation(tween, state)) return;
 
-    this._items.push([tween, state]);
+    const keep = this._beginAnimation(tween, state);
+
+    // If it is aborted in the callback at the start, do not register it
+    if (tween.finished) return;
+
+    if (!keep) {
+      tween[finishTween]();
+      return;
+    }
+
+    this._items.set(tween, {
+      state,
+      registrationId: ++this._lastRegistrationId,
+    });
   }
 
-  remove(tween: TweenableObject) {
-    this._items = this._items.filter(([t, _]) => t !== tween);
+  [removeGroup](tween: TweenableObject) {
+    this._items.delete(tween);
+  }
+
+  has(tween: TweenableObject) {
+    return this._items.has(tween);
+  }
+
+  clear() {
+    for (const tween of this._items.keys()) {
+      tween.abort();
+    }
+    this._items.clear();
   }
 
   update() {
-    const items = this._items.slice();
-    this._items.length = 0;
-    this._items = items
-      .filter(([tween, state]) => {
-        if (tween.finished) return false;
-        if (state.isWaitingCallback) return true;
+    if (this._isUpdating) {
+      throw new Error('Group.update() is already running');
+    }
+    this._isUpdating = true;
+    const lastRegistrationId = this._lastRegistrationId;
 
-        ++state.timer;
+    try {
+      for (const [tween, entry] of this._items) {
+        // Tweens added during update() will be processed in the next update()
+        if (entry.registrationId > lastRegistrationId) continue;
 
-        if (state.timer < state.duration) {
-          const n = state.easingFunc(state.timer / state.duration);
-          Object.keys(state.finishParams).forEach((key) => {
-            tween.target[key] = state.startParams[key] + (state.finishParams[key] - state.startParams[key]) * n;
-          });
-        } else {
-          Object.keys(state.finishParams).forEach((key) => {
-            tween.target[key] = state.finishParams[key];
-          });
+        if (tween.finished) {
+          this._items.delete(tween);
+          continue;
         }
+        if (entry.state.isWaitingCallback) continue;
 
-        const result = state.timer < state.duration || this._beginAnimation(tween, state);
-        tween.callUpdateListeners();
-        if (!result) tween.abort();
+        const keep = this._updateTween(tween, entry.state);
 
-        return result;
-      })
-      .concat(this._items);
+        // If the tween is removed and re-registered in the callback, do not touch it
+        if (this._items.get(tween) !== entry) continue;
+
+        if (!keep || tween.finished) {
+          this._items.delete(tween);
+          if (!tween.finished) tween[finishTween]();
+        }
+      }
+    } finally {
+      this._isUpdating = false;
+    }
+  }
+
+  private _updateTween(tween: TweenableObject, state: AnimationState) {
+    ++state.timer;
+
+    if (state.timer < state.duration) {
+      const n = state.easingFunc(state.timer / state.duration);
+      Object.keys(state.finishParams).forEach((key) => {
+        tween.target[key] = state.startParams[key] + (state.finishParams[key] - state.startParams[key]) * n;
+      });
+    } else {
+      Object.keys(state.finishParams).forEach((key) => {
+        tween.target[key] = state.finishParams[key];
+      });
+    }
+
+    const result = state.timer < state.duration || this._beginAnimation(tween, state);
+    tween.callUpdateListeners();
+
+    return result;
   }
 
   private _beginAnimation(tween: TweenableObject, state: AnimationState) {

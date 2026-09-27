@@ -116,6 +116,7 @@ describe('Tween', () => {
     expect(tween.finished).toBe(false);
     globalGroup.update();
     expect(tween.finished).toBe(true);
+    expect(tween.status).toBe('completed');
   });
 
   test('abort', () => {
@@ -127,9 +128,11 @@ describe('Tween', () => {
 
     group.update();
     expect(obj.x).toBe(10);
+    expect(tween.status).toBe('running');
 
     tween.abort();
     expect(group.length).toBe(0);
+    expect(tween.status).toBe('aborted');
 
     group.update();
     expect(obj.x).toBe(10);
@@ -164,6 +167,28 @@ describe('Tween', () => {
     expect(group.length).toBe(1);
 
     group.update();
+    expect(group.length).toBe(0);
+  });
+
+  test('group length in call', () => {
+    const obj = { x: 0 };
+    const group = new Group();
+
+    new Tween(obj)
+      .group(globalGroup)
+      .to({ x: 100 }, 1)
+      .call(() => {
+        expect(group.length).toBe(1);
+      })
+      .group(group)
+      .to({ x: 200 }, 1)
+      .start();
+
+    group.update();
+    expect(obj.x).toBe(100);
+    expect(group.length).toBe(1);
+    group.update();
+    expect(obj.x).toBe(200);
     expect(group.length).toBe(0);
   });
 

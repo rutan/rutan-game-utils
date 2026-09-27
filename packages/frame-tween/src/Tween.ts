@@ -1,20 +1,23 @@
 import { linear, EasingFunc } from './Easing.js';
 import { Group } from './Group.js';
+import { addGroup, finishTween, removeGroup } from './internal/symbol.js';
 import { TweenStack } from './Stack.js';
+
+export type TweenStatus = 'idle' | 'running' | 'completed' | 'aborted';
 
 export class Tween<T> {
   private readonly _target: T;
   private readonly _stacks: TweenStack[];
   private _group: Group | null;
   private _onUpdateListeners: (() => void)[];
-  private _finished: boolean;
+
+  private _status: TweenStatus = 'idle';
 
   constructor(target: T, initialParams?: Partial<T>) {
     this._target = target;
     this._stacks = [];
     this._group = null;
     this._onUpdateListeners = [];
-    this._finished = false;
 
     if (initialParams) {
       (Object.keys(initialParams) as (keyof T)[]).forEach((key) => {
@@ -31,11 +34,19 @@ export class Tween<T> {
     return this._target;
   }
 
+  get status() {
+    return this._status;
+  }
+
   get finished() {
-    return this._finished;
+    return this._status === 'completed' || this._status === 'aborted';
   }
 
   group(group: Group) {
+    if (this._status === 'running') {
+      throw new Error('Tween is already in a group and is running');
+    }
+
     this._group = group;
     return this;
   }
@@ -84,16 +95,40 @@ export class Tween<T> {
 
   start() {
     if (!this._group) throw new Error('not grouped');
+    if (this._status === 'running') {
+      console.warn('Tween is already running.');
+      return this;
+    }
 
-    this._group.add(this);
+    this._status = 'running';
+    try {
+      this._group[addGroup](this);
+    } catch (error) {
+      this.abort();
+      throw error;
+    }
     return this;
   }
 
   abort() {
-    this._stacks.length = 0;
-    this._finished = true;
-    // ensure the tween is no longer tracked by its group
-    this._group?.remove(this);
+    if (this.finished) return this;
+
+    this._status = 'aborted';
+    this._cancelAnimation();
     return this;
+  }
+
+  [finishTween]() {
+    if (this._status !== 'running') {
+      throw new Error('Tween is not running, cannot finish.');
+    }
+
+    this._status = 'completed';
+    this._cancelAnimation();
+  }
+
+  private _cancelAnimation() {
+    this._stacks.length = 0;
+    this._group?.[removeGroup](this);
   }
 }
