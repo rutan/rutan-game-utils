@@ -7,7 +7,7 @@ export type TweenStatus = 'idle' | 'running' | 'completed' | 'aborted';
 
 export class Tween<T> {
   private readonly _target: T;
-  private readonly _stacks: TweenStack[];
+  private readonly _stacks: TweenStack<T>[];
   private _group: Group | null;
   private _onUpdateListeners: (() => void)[];
 
@@ -63,6 +63,14 @@ export class Tween<T> {
 
   callUpdateListeners() {
     this._onUpdateListeners.forEach((f) => f());
+  }
+
+  set(params: Partial<T>) {
+    this._stacks.push({
+      type: 'set',
+      params,
+    });
+    return this;
   }
 
   to(params: Partial<T>, duration: number, easingFunc?: EasingFunc) {

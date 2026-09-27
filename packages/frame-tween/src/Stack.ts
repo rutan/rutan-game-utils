@@ -1,10 +1,15 @@
 import { EasingFunc } from './Easing.js';
 
-export type TweenStack = MoveStack | CallStack;
+export type TweenStack<T> = SetStack<T> | MoveStack<T> | CallStack;
 
-export interface MoveStack {
+export interface SetStack<T> {
+  type: 'set';
+  params: Partial<T>;
+}
+
+export interface MoveStack<T> {
   type: 'move';
-  params: any;
+  params: Partial<T>;
   duration: number;
   easingFunc: EasingFunc;
 }
