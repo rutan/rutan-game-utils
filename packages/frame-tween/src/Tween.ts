@@ -13,6 +13,14 @@ export class Tween<T> {
 
   private _status: TweenStatus = 'idle';
 
+  constructor(target: T);
+
+  /**
+   * @deprecated The `initialParams` parameter is deprecated.
+   * Use `new Tween(target).set(initialParams)` instead.
+   */
+  constructor(target: T, initialParams: Partial<T> | undefined);
+
   constructor(target: T, initialParams?: Partial<T>) {
     this._target = target;
     this._stacks = [];
