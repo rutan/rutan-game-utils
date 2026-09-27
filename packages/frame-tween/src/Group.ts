@@ -141,19 +141,12 @@ export class Group {
       if (!stack) return false;
 
       switch (stack.type) {
-        case 'call':
-          if (stack.func.length === 0) {
-            stack.func();
-          } else {
-            state.isWaitingCallback = true;
-            stack.func(() => (state.isWaitingCallback = false));
-          }
-
-          if (state.isWaitingCallback) {
-            return true;
-          } else {
-            break; // loop!
-          }
+        case 'set': {
+          Object.keys(stack.params).forEach((key) => {
+            tween.target[key] = stack.params[key];
+          });
+          break; // loop!
+        }
         case 'move': {
           const startParams: any = {};
           Object.keys(stack.params).forEach((key) => {
@@ -166,6 +159,24 @@ export class Group {
           state.easingFunc = stack.easingFunc;
           state.timer = 0;
           return true;
+        }
+        case 'call': {
+          if (stack.func.length === 0) {
+            stack.func();
+          } else {
+            state.isWaitingCallback = true;
+            stack.func(() => (state.isWaitingCallback = false));
+          }
+
+          if (state.isWaitingCallback) {
+            return true;
+          } else {
+            break; // loop!
+          }
+        }
+        default: {
+          const _exhaustiveCheck: never = stack;
+          throw new Error(`Unknown stack type: ${String((stack as any).type)}`);
         }
       }
     }

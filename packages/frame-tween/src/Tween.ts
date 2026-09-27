@@ -7,11 +7,19 @@ export type TweenStatus = 'idle' | 'running' | 'completed' | 'aborted';
 
 export class Tween<T> {
   private readonly _target: T;
-  private readonly _stacks: TweenStack[];
+  private readonly _stacks: TweenStack<T>[];
   private _group: Group | null;
   private _onUpdateListeners: (() => void)[];
 
   private _status: TweenStatus = 'idle';
+
+  constructor(target: T);
+
+  /**
+   * @deprecated The `initialParams` parameter is deprecated.
+   * Use `new Tween(target).set(initialParams)` instead.
+   */
+  constructor(target: T, initialParams: Partial<T> | undefined);
 
   constructor(target: T, initialParams?: Partial<T>) {
     this._target = target;
@@ -63,6 +71,14 @@ export class Tween<T> {
 
   callUpdateListeners() {
     this._onUpdateListeners.forEach((f) => f());
+  }
+
+  set(params: Partial<T>) {
+    this._stacks.push({
+      type: 'set',
+      params,
+    });
+    return this;
   }
 
   to(params: Partial<T>, duration: number, easingFunc?: EasingFunc) {

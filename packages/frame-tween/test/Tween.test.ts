@@ -30,6 +30,24 @@ describe('Tween', () => {
     }
   });
 
+  test('set', () => {
+    const obj = { x: 0 };
+    new Tween(obj)
+      .group(globalGroup)
+      .wait(1)
+      .set({ x: 100 })
+      .wait(1)
+      .set({ x: 200 })
+      .set({ x: 300 }) // no wait, so it will be set immediately
+      .start();
+
+    expect(obj.x).toBe(0);
+    globalGroup.update();
+    expect(obj.x).toBe(100);
+    globalGroup.update();
+    expect(obj.x).toBe(300);
+  });
+
   test('callback', () => {
     let flagA = false;
     let flagB = false;
